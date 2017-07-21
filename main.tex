@@ -124,12 +124,12 @@ Introduction : why S82 is great,  why we need Quasars,  what has been done so fa
 \subsection{Stripe 82}
 We use data from all SDSS runs up to an including run 7202 (Data Release 7), including all 6 SDSS camera columns. Stripe 82 survey covered an equatorial strip of the sky, defined by declination limits of $\pm1.27\deg$, extending from R.A. $\approx$ $20^{h} (320 \deg)$ to R.A.  $\approx$ $4^{h} (55 \deg)$ \citep{sesar2007,sesar2010}. Observations conducted prior to September 2005 (part of SDSS I-II) had a more sparse sampling than SDSS-III, and the SDSS Supernova Survey, which ran between September 1st - November 30th each year between 2005-2007. 
 
-The SDSS Stripe 82 DR7  data  was processed in two data centers : NCSA (National Center for Supercomputing Applications, University of Illinois at Urbana-Champaign, IL) and IN2P3  (Institut national de physique nucl\'eaire et de physique des particules in Paris, France). NCSA processed data from $-40 \deg \, (+320 \deg) < RA < +10 \deg $ and IN2P3 with $ +5 \deg < RA < +55 \deg$ . There is a $5 \deg$ overlap, used to confirm that the data processing pipeline in both data centers yields identical data products. The entire strip was split into smaller patches
+The SDSS Stripe 82 DR7  data  was processed in two data centers : NCSA (National Center for Supercomputing Applications, University of Illinois at Urbana-Champaign, IL) and IN2P3  (Institut national de physique nucl\'eaire et de physique des particules in Paris, France). NCSA processed data from $-40 \deg \, (+320 \deg) < RA < +10 \deg $ and IN2P3 with $ +5 \deg < RA < +55 \deg$ . There is a $5 \deg$ overlap, used to confirm that the data processing pipeline in both data centers yields identical data products. The entire strip was split into smaller patches.
 
 All epochs (individual images) were background-subtracted, and then scaled from the Digital Unit counts to fluxes by comparing standard objects against the \citep{ivezic2007} catalog  (similar to  Jiang+2014).   
 
 \subsection{Source Detection}
-Sources were detected in the i-band coadds. Each detection in the coadded images was assigned a deepSourceId (elsewhere called objectId). Considering  a dense region with clumped stars and/or galaxies, the entire clump was considered as one parent source (with single ParentSourceId). For an object which is a parent (eg. a galaxy), ParentSourceId is null. Solitary sources which are not blended  in clumps are their own parents. The result of this procedure were $~40$ million  i-band detections down to $3 \, \sigma$.  $8$ million of those are brighter than $23^{rd}$ mag. Part of Stripe82 processed in NCSA yielded  $20978391$ detections (\verb|iCoaddAll.csv|). The part that does not overlap with IN2P3 has   $16520093$ sources (\verb|iCoaddPhotometryAll.csv|), of which  $16514187$ are brighter than $30^{mag}$  ($5906$ less) (\verb|DeepSourceNCSA_i_lt300.csv|).
+Sources were detected in the i-band coadds. Each detection in the coadded images was assigned a deepSourceId (elsewhere called objectId). Considering  a dense region with clumped stars and/or galaxies, the entire clump was considered as one parent source (with single ParentSourceId). For an object which is a parent (eg. a galaxy), ParentSourceId is null. Solitary sources which are not blended  in clumps are their own parents. The result of this procedure were $~40$ million  i-band detections down to $3 \, \sigma$.  $8$ million of those are brighter than $23^{rd}$ mag. Part of Stripe82 processed in NCSA yielded  $20978391$ detections (\verb|iCoaddAll.csv|). The part that does not overlap with IN2P3 has   $16520093$ sources (\verb|iCoaddPhotometryAll.csv|), of which  $16514187$ are brighter than $30^{mag}$  ($5906$ less) (\verb|DeepSourceNCSA_i_lt300.csv|). \footnote{Code used by Ian McGreer and Yusra AlSayyad to create Summer 2013 re-processed summary files is available on GitHub at \url{https://github.com/imcgreer/QLFz4}}
 
 \subsection{Forced Photometry}
 On positions specified by the detection data AlSayyad+2015 performed forced photometry in all SDSS photometric bands, on the individual epoch images. It is different from image differences technique, where the photometry is done on a difference between a coadd and an individual epoch image.  The total number of photometric measurements (combining NCSA and IN2P3) was  ($40$  million i-band detections) x ($80$ epochs ) x ($5$ filters) = $~16$ billion measurements, including   ($8$ million i-band detections i < 23) x ($80$ epochs) x ($5$ filters ) = $3.2$ billion measurements brighter than $23^{rd}$ mag.
@@ -138,7 +138,7 @@ For each patch the raw light curves contain the \verb|id|, \verb|objectId|, \ver
 
 
 \section{Analysis}
-
+\label{sec:analysis}
 We developed  a new pipeline that was applied to all forced photometry light curves.  The main steps involve:
 \begin{itemize}
   \item selecting faint epochs (where S/N  is less than a selected threshold), 
@@ -231,9 +231,10 @@ For each light curve, we also calculate mean-based $\chi^{2}_{DOF}$ and median-b
 \bigskip
 
 \begin{figure*}
-\label{fig:sigma_example}
+
 \includegraphics[width=\textwidth]{figs/Fig_1_obj_217720894888346446}
 \cprotect\caption{Two-step approach to finding $\mu$ and $\sigma$ via $\mu_{0}$ and $\sigma_{0}$ for an object 217720894888346446. In this calculation we use raw psf flux, before employing the faint source treatment outlined in Section~\ref{sec:analysis}. On the left and middle panels,  solid lines trace marginalized posterior pdfs for $\mu$ and $\sigma$ , while dashed lines depict histogram distributions of 10,000 bootstrap resamples for $\mu_{0}$ and $\sigma_{0}$. The right panel shows the logarithm of the posterior probability density function for $\mu$ and $\sigma$.}
+\label{fig:sigma_example}
 \end{figure*}
 
 On Fig.~\ref{fig:sigma_example} we plot the stages of calculating $\mu$ and $\sigma$. Left and middle panels compare the two methods of calculating variability parameters. The initial approximation (dashed) is based on bootstrapped resampling of ($x_i$, $e_i$) points from  the light curve. By randomly resampling the light curve $M$ times, instead of a single sample with $N \approx 10-70 $ points  we have $M$ samples. The histogram of  $M=1000$ values for $\mu$, $\sigma$ from resampling is plotted with dashed lines. 
@@ -242,9 +243,10 @@ We use the approximate values to provide bounds for the $200 x 70$ grid of $\mu$
 
 
 \begin{figure*}
-\label{fig:lc_example_seasonal}
+
  \includegraphics[width=\textwidth]{figs/Fig_2_Lightcurve_full_seasonal_obj_217720894888346425}
  \cprotect\caption{A plot showing an outcome of seasonal averaging for an object id 217720894888346425. The left panel (red dots) shows  (mean, meanErr),  and the right panel (orange) shows (median,medianErr), instead of seasonal points (blue). Vertical dashed lines as on Fig.~\ref{fig:lc_example}}
+ \label{fig:lc_example_seasonal}
 \end{figure*}
 
 %\subsubsection{Variable Candidates Selection}
@@ -297,17 +299,19 @@ Since the reported fluxes are not extinction-corrected, we use a table of E(B-V)
 
 
 \begin{figure}
-\label{fig:coadds_ext}
+
  \includegraphics[width=\columnwidth]{figs/Fig_3_Extendedness_coadd_data_16520093_srcs_lim}
- \cprotect\caption{A plot showing NCSA sources detected in coadds, removing the outliers beyond the edges of the plot. The coloring corresponds to the \verb|extendedness | parameter calculated in the pipeline based on the iPsfMag-iModelMag : red being 0 (compact), and green being 1 (extended). As iModelMag increases, the separation becomes less certain, as more distant galaxies are more compact.  }
+ \cprotect\caption{Scatter plot of all NCSA sources detected in coadds (from Deep Source catalog); The coloring corresponds to the \verb|extendedness | parameter calculated in the pipeline based on the value of iPsfMag-iModelMag : red being 0 (compact), and green being 1 (extended). The threshold iPsfMag-iModelMag  = 0.085645 (indeed, the red points appear to be cut sharply at y=0.085645 line).  Initially, for bright objects, on the left side of the plot, iPsfMag-iModelMag is very much larger for green (extended) as opposed to red (compact) objects. As iModelMag decreases  (and correspondingly, so does iPsfMag), the objects become fainter, and less extended. This is why the green swaths approach the red horizontal group. Indeed, for fainter objects, the separation becomes less certain, as more distant galaxies appear to be more compact.  }
+\label{fig:extendedness}
 \end{figure}
 
 Colors $x-y$ for an object with observations over many epochs are defined as the difference in magnitudes $m_{x} - m_{y}$. To find $m_{x}$, we need to define the average brightness of an object in  a given filter. With a special treatment of faint sources, substituting ($F_{obs}$,$\sigma_F$) for each faint observation by ($<F_{exp}>$,$rms$), we analyse updated lightcurves, addressing sparse sampling (see Fig.~\ref{fig:lc_example}).  
 
 \begin{figure}
-\label{fig:lc_example}
+
  \includegraphics[width=\columnwidth]{figs/Fig_4_Lightcurve_full_obj_217720894888346422}
  \cprotect\caption{A plot showing an example light curve for an object id 217720894888346422. Jan 1st of each year (blue),  August 1st of 2005 (orange) and August 1st of each subsequent year (red) is indicated by vertical dashed lines. Observations prior to August 1st of 2005 have sparser cadence, whereas those after that date have more frequent observations.  This is due to the SDSS-III Supernova Survey which begun  Sept 1st 2005.  All points to the left of August 1st 2005 (orange line) are averaged together.  Points to the right of August 1st 2005 are seasonally averaged. }
+ \label{fig:lc_example}
 \end{figure}
 
 Thus for a given object we average all sparser observations prior before SDSS-III, and calculate annual averages for all subsequent years. We calculate weighted mean and the rms as 
@@ -329,9 +333,10 @@ The resulting average flux is converted to magnitude, and the color is  $c = m_{
 
 
 \begin{figure*}
-\label{fig:colors_example}
+
 \includegraphics[width=\textwidth]{figs/Fig_5_g-i_vs_i_ra_310-360hist_n_50row_ext_0}
 \cprotect\caption{A color-magnitude plot , reproducing the results of \citep{sesar2010} , Fig.23 .  We show here only NCSA-processed sources, which is why certain RA ranges are omitted or have less sources. We only select sources with \verb|extendedness=0| parameter (stars).  The scale is showing the $\log_{10}$ of count. All sources have their  colors corrected for extinction. On first two panels the features of Sagittarius Stream are clearly visible. }
+\label{fig:colors_example}
 \end{figure*}
 % 
 
@@ -339,9 +344,10 @@ The resulting average flux is converted to magnitude, and the color is  $c = m_{
 
 % http://tex.stackexchange.com/questions/3173/how-to-make-a-figure-span-on-two-columns-in-a-scientific-paper 
 \begin{figure*}
-\label{fig:coadds_ext_hist}
+
  \includegraphics[width=\textwidth]{figs/Fig_6_Extendedness_coadd_histograms}
- \caption{The histograms show the count of sources in 5 magnitude bins, corresponding to the vertical cut through Fig.~\ref{fig:coadds_ext}. It helps to verify how well can the extended and compact sources be separated based solely on the iPsfMag-iModelMag}
+ \caption{The histograms show the count of sources in 5 i-magnitude bins, corresponding to the vertical cut through Fig.~\ref{fig:extendedness}. It helps to verify how well can the extended and compact sources be separated based solely on the iPsfMag-iModelMag.  In the S82 reprocessing pipeline, the Deep Source catalogs were made assuming that whenever iPsfMag-iModelMag > 0.085645,  extendedness = 1. In other words, when the object appears brighter by 0.085645 magnitudes with the model fit rather than psf magnitude, then it is considered to be extended. See Palanque-Delabrouille+2016 Fig.2 for more on how iPsfMag-iModelMag can be used to select quasars. Specifically, nearby quasars may still have the host galaxy visible, which would in some cases not pass this criterion and be assigned extendedness 0.}
+ \label{fig:coadds_ext_hist}
 \end{figure*}
 
 
