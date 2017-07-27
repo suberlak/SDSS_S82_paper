@@ -75,7 +75,7 @@
 
 % Title of the paper, and the short title which is used in the headers.
 % Keep the title short and informative.
-\title[SDSS Quasars]{SDSS Stripe 82 : quasar variability from forced photometry}
+\title[SDSS Quasars]{OLD OLD OLD  SDSS Stripe 82 }
 
 % The list of authors, and the short list which is used in the headers.
 % If you need two or more lines of authors, add an extra line using \newauthor
@@ -110,32 +110,6 @@ $^{1}$Department of Astronomy, University of Washington, Seattle, WA, United Sta
 
 %%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
 
-\section{Introduction}
-\label{sec:intro}
-
-Introduction : why S82 is great,  why we need Quasars,  what has been done so far with S82, why we can do better with reprocessed data,  our stab at  successfully selecting quasars (among other objects) , what we do with our 'gold' sample.  
-
-\section{Methods}
-
-
-\section{Data Overview}
-\label{sec:data}
-
-\subsection{Stripe 82}
-We use data from all SDSS runs up to an including run 7202 (Data Release 7), including all 6 SDSS camera columns. Stripe 82 survey covered an equatorial strip of the sky, defined by declination limits of $\pm1.27\deg$, extending from R.A. $\approx$ $20^{h} (320 \deg)$ to R.A.  $\approx$ $4^{h} (55 \deg)$ \citep{sesar2007,sesar2010}. Observations conducted prior to September 2005 (part of SDSS I-II) had a more sparse sampling than SDSS-III, and the SDSS Supernova Survey, which ran between September 1st - November 30th each year between 2005-2007. 
-
-The SDSS Stripe 82 DR7  data  was processed in two data centers : NCSA (National Center for Supercomputing Applications, University of Illinois at Urbana-Champaign, IL) and IN2P3  (Institut national de physique nucl\'eaire et de physique des particules in Paris, France). NCSA processed data from $-40 \deg \, (+320 \deg) < RA < +10 \deg $ and IN2P3 with $ +5 \deg < RA < +55 \deg$ . There is a $5 \deg$ overlap, used to confirm that the data processing pipeline in both data centers yields identical data products. The entire strip was split into smaller patches.
-
-All epochs (individual images) were background-subtracted, and then scaled from the Digital Unit counts to fluxes by comparing standard objects against the \citep{ivezic2007} catalog  (similar to  Jiang+2014).   
-
-\subsection{Source Detection}
-Sources were detected in the i-band coadds. Each detection in the coadded images was assigned a deepSourceId (elsewhere called objectId). Considering  a dense region with clumped stars and/or galaxies, the entire clump was considered as one parent source (with single ParentSourceId). For an object which is a parent (eg. a galaxy), ParentSourceId is null. Solitary sources which are not blended  in clumps are their own parents. The result of this procedure were $~40$ million  i-band detections down to $3 \, \sigma$.  $8$ million of those are brighter than $23^{rd}$ mag. Part of Stripe82 processed in NCSA yielded  $20978391$ detections (\verb|iCoaddAll.csv|). The part that does not overlap with IN2P3 has   $16520093$ sources (\verb|iCoaddPhotometryAll.csv|), of which  $16514187$ are brighter than $30^{mag}$  ($5906$ less) (\verb|DeepSourceNCSA_i_lt300.csv|). \footnote{Code used by Ian McGreer and Yusra AlSayyad to create Summer 2013 re-processed summary files is available on GitHub at \url{https://github.com/imcgreer/QLFz4}}
-
-\subsection{Forced Photometry}
-On positions specified by the detection data AlSayyad+2015 performed forced photometry in all SDSS photometric bands, on the individual epoch images. It is different from image differences technique, where the photometry is done on a difference between a coadd and an individual epoch image.  The total number of photometric measurements (combining NCSA and IN2P3) was  ($40$  million i-band detections) x ($80$ epochs ) x ($5$ filters) = $~16$ billion measurements, including   ($8$ million i-band detections i < 23) x ($80$ epochs) x ($5$ filters ) = $3.2$ billion measurements brighter than $23^{rd}$ mag.
-For each patch the raw light curves contain the \verb|id|, \verb|objectId|, \verb|exposure_id|, \verb|mjd|, \verb|psfFlux|, \verb|psfFluxErr|, sorted by \verb|objectId|, measuring flux in $[ergs/ cm^{2} / sec / Hz]$ (\verb|rawDataFPSplit/bandPatchStart_PatchEnd.csv|). 
-
-
 
 \section{Analysis}
 \label{sec:analysis}
@@ -149,97 +123,9 @@ We developed  a new pipeline that was applied to all forced photometry light cur
   \item merging the light curve aggregates across filters
 \end{itemize}
 
-[ the rest  moved to FAINT PIPELINE REPORT  ] 
+
 
 \subsection{Variability}
-
-
-%
-%%%%%%%%%%%%%%%%% MOTIVATION %%%%%%%%%%%%%%%%%
-%
-
-%
-%%%%%%%%%%%%%%%%% STATISTICS WE USE %%%%%%%%%%%%%%%%%
-%
-
-In what follows, for faint measurements we choose to replace $F$ with $F_{mean}$  (see Faint Pipeline Report). For all objects we calculate statistics based on entire light curves. We denote $(F_{obs}, \sigma_{obs})$ as $(x_{i},\sigma_{i})$ : 
-
-- mean weighted by  $w_{i} = (\sigma_{i})^{-2}$
-%\begin{gather*}
-\begin{equation}
-%\begin{align}
-\bar{x} = \frac{\sum_{i=1}^{N}{w_{i}x_{i}}}{\sum_{i=1}^{N}{w_{i}}}
-%\end{align}
-\end{equation}
-%\end{gather*}
-
-- weighted mean error 
-\begin{equation}
-\sigma_{\bar{x}} = \left( \sum{w_{i}}\right) ^{-1/2} 
-\end{equation}
-
-- weighted standard deviation 
-\begin{equation}
-\sigma_{st.dev.w.} = \left( \frac{\sum{w_{i}(x_{i} - \bar{x})^{2}}}{\sum{w_{i}}} \right) ^ {1/2}
-\end{equation}
-
-- error on standard deviation 
-\begin{equation}
-\sigma_{s} = \frac{1}{\sqrt{2}}\sqrt{\frac{N}{N-1}} \sigma_{\bar{x}}
-\end{equation}
-
-- robust interquartile width
-\begin{equation}
-\sigma_{G} = 0.7414 * (75\% - 25\%) 
-\end{equation}
-
-- median as the 50-th percentile , median error 
-\begin{equation}
-\sigma_{median} = \sqrt{\pi/2}\sigma_{\bar{x}}
-\end{equation}
- 
-%\begin{figure}
-%\label{fig:sim_lc}
-% \includegraphics[width=\columwidth]{Flux_exp_faint.png}
-%\caption{A portion of a simulated lightcurve with arbitrary time and flux units, where the simulated forced photometry flux is below the 2 sigma %%level. The simulated observed points that are below 2 sigma level,  may even drop below zero, and  are subjected to our algorithm correctiong for the unphysicality of such situation. Thus we impose the non-negative flat prior, and re-calculate the flux for each point using the truncated Gaussian likelihood, by finding either mean, median, or the two sigma upper limit of the measurement. }
-%\end{figure}
-%\subsubsection{Variability Characteristics}
-
-%
-%  ASTRO-ML MU AND SIGMA 
-%
-
-Variations in object brightness  have two main origins:  an  error-induced noise, and an intrinsic variability. A light curve consists of a set of N measurements of brightness  $x_{i}$  with  errors  $e_{i}$. In this analysis we assume that  $x_{i}$ are drawn from a Gaussian distribution  $\mathcal{N}(\mu,\sigma)$, and that errors $e_{i}$ are homoscedastic. We describe this distribution with two parameters : mean $\mu$, and width $\sigma$. To increase efficiency, we employ a two-step  approach after Ivezic+2014. 
-First, we find approximate values of  $\mu_{0}$ and $\sigma_{0}$, and then we evaluate the full logarithm of the posterior pdf in the vicinity of the approximate solution.
-With a Bayesian approach, we find $\mu_{full},\sigma_{full}$  by maximizing  the posterior probability distribution function (pdf) of  $\mu,\sigma$ given $x_{i}$ and $e_{i}$ : $p(\mu | {x_{i}},{\sigma_{i}})$ (see Fig.~\ref{fig:sigma_example}, and Appendix B for the detailed calculation). 
-
-For each light curve, we also calculate mean-based $\chi^{2}_{DOF}$ and median-based $\chi^{2}_{R}$ (the latter is more robust against any outliers in the distribution) : 
-
-\begin{equation}
-\label{eqn:chi2DOF}
-\chi^{2}_{dof} = \frac{1}{N-1}\sum{\left( \frac{x_{i} - <x_{i}>} {e_{i}} \right) ^{2}}
-\end{equation}
-
-\noindent and
- 
-\begin{equation}
-\label{eqn:chi2R}
-\chi^{2}_{R} = 0.7414 (Z_{75\%} - Z_{25\%} ) 
-\end{equation}
-
-\noindent with $Z=(x_{i} - median(x_{i})) / e_{i} $. 
-\bigskip
-
-\begin{figure*}
-
-\includegraphics[width=\textwidth]{figs/Fig_1_obj_217720894888346446}
-\cprotect\caption{Two-step approach to finding $\mu$ and $\sigma$ via $\mu_{0}$ and $\sigma_{0}$ for an object 217720894888346446. In this calculation we use raw psf flux, before employing the faint source treatment outlined in Section~\ref{sec:analysis}. On the left and middle panels,  solid lines trace marginalized posterior pdfs for $\mu$ and $\sigma$ , while dashed lines depict histogram distributions of 10,000 bootstrap resamples for $\mu_{0}$ and $\sigma_{0}$. The right panel shows the logarithm of the posterior probability density function for $\mu$ and $\sigma$.}
-\label{fig:sigma_example}
-\end{figure*}
-
-On Fig.~\ref{fig:sigma_example} we plot the stages of calculating $\mu$ and $\sigma$. Left and middle panels compare the two methods of calculating variability parameters. The initial approximation (dashed) is based on bootstrapped resampling of ($x_i$, $e_i$) points from  the light curve. By randomly resampling the light curve $M$ times, instead of a single sample with $N \approx 10-70 $ points  we have $M$ samples. The histogram of  $M=1000$ values for $\mu$, $\sigma$ from resampling is plotted with dashed lines. 
-We use the approximate values to provide bounds for the $200 x 70$ grid of $\mu$, $\sigma$, used to evaluate the full posterior likelihood density function (right panel). This ensures that, despite using a coarse grid to improve computational speed,  we still resolve the peak of the underlying distribution. 
-%Note that $\mu_{approx}$ traces well the full solution, but $\sigma_{approx}$ has a pile-up torawds 0, due to ... 
 
 
 \begin{figure*}
@@ -249,61 +135,13 @@ We use the approximate values to provide bounds for the $200 x 70$ grid of $\mu$
  \label{fig:lc_example_seasonal}
 \end{figure*}
 
-%\subsubsection{Variable Candidates Selection}
-
-%
-%%%%%%%%%%%%%%%%% TO WHAT DATA WE CALCULATE STATS  %%%%%%%%%%%%%%%%%
-%
-
-%
-% FIRST SWIPE : FULL LIGHTCURVES 
-%
-
-%
-% DEFINITION OF VARIABILITY 
-% 
-All variability parameters describe in a certain way the light curve variability. $\sigma_{full}$  corresponds to the spread of the flux distribution. For a non-variable source, $\chi^{2}$ would be centered about 1, with a width $\sigma$ of $\sqrt{2/N}$, where $N$ is the number of points per light curve. Thus we would expect that for any distribution $50\%$ of sources would have $\chi^{2}>1$. Therefore a $"3\sigma"$ variability detection would require $\chi^{2} > \chi^{2}_{limit}$, with $\chi^{2}_{limit} = 1 + 3\sqrt{2/N}$
-We call a source a 'robust variability candidate' if $\sigma_{full}>0$ and ($\chi^{2}_{DOF} > \chi^{2}_{limit}$ or $\chi^{2}_{R} > \chi^{2}_{limit}$), i.e. we require the full $\sigma$ to be larger than 0, and either robust or DOF $\chi^{2}$ to be larger than the limiting $\chi^{2}$. 
-
-%
-% DEFINITION OF A SEASON
-% 
-
-%\subsubsection{Seasonal Statistics}
-Initially, we evaluate variability parameters $\mu_{full}$, $\sigma_{full}$, $\chi^{2}_{dof}$, and $\chi^{2}_{R}$ based on all points of the light curve. Only for variable sources, as defined above, we calculate the variability parameters for the seasonally-binned portions of the light curve. The $\chi^{2}_{DOF}$ vs. $\chi^{2}_{R}$ plotted on Fig. ...  shows that these distributions are similar for seasons as well as full light curves.    
-
-%
-% SECOND SWIPE : SEASONS AND SEASONALLY-BINNED LIGHTCURVES 
-% 
-
-
-
 
 \subsection{Colors}
-%
-%%%%%%%%%%%%%%%%% WHY WE NEED COLORS  %%%%%%%%%%%%%%%%%
-%
-
-
-%
-%%%%%%%%%%%%%%%%% OUR CONVENTION ON CALCULATING MAGNITUDES  %%%%%%%%%%%%%%%%%
-%
-
-
-%
-%%%%%%%%%%%%%%%%% EXTINCTION CORRECTION  %%%%%%%%%%%%%%%%%
-%
 
 
 Since the reported fluxes are not extinction-corrected, we use a table of E(B-V) in a direction of a given source to correct for the galactic extinction. We use the formula  $x_{corr}  = x_{obs} + A_{x} * E(B-V)$, where $x$ is  u,g,r,i,z , and $A_x$ is 5.155, 3.793, 2.751, 2.086, 1.479  for each filter respectively  [Schlegel 98, Av are for RV = 3.1, also suggested by Eddie Schlafly] 
 
 
-\begin{figure}
-
- \includegraphics[width=\columnwidth]{figs/Fig_3_Extendedness_coadd_data_16520093_srcs_lim}
- \cprotect\caption{Scatter plot of all NCSA sources detected in coadds (from Deep Source catalog); The coloring corresponds to the \verb|extendedness | parameter calculated in the pipeline based on the value of iPsfMag-iModelMag : red being 0 (compact), and green being 1 (extended). The threshold iPsfMag-iModelMag  = 0.085645 (indeed, the red points appear to be cut sharply at y=0.085645 line).  Initially, for bright objects, on the left side of the plot, iPsfMag-iModelMag is very much larger for green (extended) as opposed to red (compact) objects. As iModelMag decreases  (and correspondingly, so does iPsfMag), the objects become fainter, and less extended. This is why the green swaths approach the red horizontal group. Indeed, for fainter objects, the separation becomes less certain, as more distant galaxies appear to be more compact.  }
-\label{fig:extendedness}
-\end{figure}
 
 Colors $x-y$ for an object with observations over many epochs are defined as the difference in magnitudes $m_{x} - m_{y}$. To find $m_{x}$, we need to define the average brightness of an object in  a given filter. With a special treatment of faint sources, substituting ($F_{obs}$,$\sigma_F$) for each faint observation by ($<F_{exp}>$,$rms$), we analyse updated lightcurves, addressing sparse sampling (see Fig.~\ref{fig:lc_example}).  
 
@@ -338,90 +176,7 @@ The resulting average flux is converted to magnitude, and the color is  $c = m_{
 \cprotect\caption{A color-magnitude plot , reproducing the results of \citep{sesar2010} , Fig.23 .  We show here only NCSA-processed sources, which is why certain RA ranges are omitted or have less sources. We only select sources with \verb|extendedness=0| parameter (stars).  The scale is showing the $\log_{10}$ of count. All sources have their  colors corrected for extinction. On first two panels the features of Sagittarius Stream are clearly visible. }
 \label{fig:colors_example}
 \end{figure*}
-% 
 
-
-
-% http://tex.stackexchange.com/questions/3173/how-to-make-a-figure-span-on-two-columns-in-a-scientific-paper 
-\begin{figure*}
-
- \includegraphics[width=\textwidth]{figs/Fig_6_Extendedness_coadd_histograms}
- \caption{The histograms show the count of sources in 5 i-magnitude bins, corresponding to the vertical cut through Fig.~\ref{fig:extendedness}. It helps to verify how well can the extended and compact sources be separated based solely on the iPsfMag-iModelMag.  In the S82 reprocessing pipeline, the Deep Source catalogs were made assuming that whenever iPsfMag-iModelMag > 0.085645,  extendedness = 1. In other words, when the object appears brighter by 0.085645 magnitudes with the model fit rather than psf magnitude, then it is considered to be extended. See Palanque-Delabrouille+2016 Fig.2 for more on how iPsfMag-iModelMag can be used to select quasars. Specifically, nearby quasars may still have the host galaxy visible, which would in some cases not pass this criterion and be assigned extendedness 0.}
- \label{fig:coadds_ext_hist}
-\end{figure*}
-
-
-
-
-
-
-\section{Conclusions}
-\label{sec:conclusions}
-
-
-
-\section*{Acknowledgements}
-
-Funding for the SDSS and SDSS-II has been provided by the Alfred P. Sloan Foundation, the Participating Institutions, the National Science Foundation, the U.S. Department of Energy, the National Aeronautics and Space Administration, the Japanese Monbukagakusho, the Max Planck Society, and the Higher Education Funding Council for England. The SDSS Web Site is http://www.sdss.org/.
-
-The SDSS is managed by the Astrophysical Research Consortium for the Participating Institutions. The Participating Institutions are the American Museum of Natural History, Astrophysical Institute Potsdam, University of Basel, University of Cambridge, Case Western Reserve University, University of Chicago, Drexel University, Fermilab, the Institute for Advanced Study, the Japan Participation Group, Johns Hopkins University, the Joint Institute for Nuclear Astrophysics, the Kavli Institute for Particle Astrophysics and Cosmology, the Korean Scientist Group, the Chinese Academy of Sciences (LAMOST), Los Alamos National Laboratory, the Max-Planck-Institute for Astronomy (MPIA), the Max-Planck-Institute for Astrophysics (MPA), New Mexico State University, Ohio State University, University of Pittsburgh, University of Portsmouth, Princeton University, the United States Naval Observatory, and the University of Washington. 
-
-
-\appendix
-\section{\\ Characterizing variability}
-\label{sec:variability}
-
-
-We further characterize the variability of light curves by calculating $\sigma_{0}$ (the approximate value), and $\sigma_{full}$, following Ivezic+2014, chapter 5. 
-
-$\sigma_{0}$ is found in the following way: if by ($x_{i}, e_{i}$) we denote the measurement and associated error, then the bootstrapped sampling of ($x_{i}, e_{i}$) is sampling each vector at a number of N random indices (eg. N=1000). Thus instead of $x_{i}$ which may include only N=10 measurements, we have $x_{i,boot}$ which has N=1000 random samples. Median is the 50-th percentile of any sample.  Following [Ivezic+2014], chapter 5, we use the sample median to estimate $\mu_{0} = median(x_{i,boot})$, and an interquartile range width estimator to estimate the standard deviation : $\sigma_{G} =0.7413 (X_{75\%} - X_{25\%}) $ for $X = x_{i,boot}$.
-With the median error $e_{50} = median(e_{i,boot})$, we estimate $\sigma_{0}$ as : 
-
-\begin{equation}
-\sigma_{0} = ( variance_{approx} )^{1/2} = (\zeta^{2} \cdot \sigma_{G}^{2} - e_{50} ^ {2})^{1/2}
-\end{equation}
-
-where 
-
-\begin{equation}
-\zeta = \frac{median(\widetilde{\sigma}_{i})} {mean(\widetilde{\sigma}_{i})}
-\end{equation}
-
-and 
-
-\begin{equation}
-\widetilde{\sigma}_{i} =  ( \widetilde{variance} )^{1/2} = ( \sigma_{G}^{2} + e_{i}^{2} - e_{50}^{2} )^{1/2}
-\end{equation}
-
-
-For the marginalized $\sigma_{full}$, we calculate logarithm of the posterior probability distribution for the grid of $\mu$ and $\sigma$ values as:
-
-\begin{equation}
-\log{L} = -0.5 \sum \left( \ln(\sigma^{2}+e_{i}^{2}) + \frac{(x_{i}-\mu)^{2}}{(\sigma^{2}+e_{i}^{2})} \right)
-\end{equation}
-
-We shift the maximum value of logL by subtracting the maximum value of logL, thus calculating the likelihood : 
-
-\begin{equation}
-L = e^{\log{L} - max(\log{L})}
-\end{equation}
-
-We then marginalize over $\mu$ or $\sigma$ : 
-
-\begin{equation}
-p(\sigma) = \sum_{\mu}(L_{\sigma,\mu}) \\
-p(\mu) = \sum_{\sigma}(L_{\sigma,\mu})
-\end{equation}
-
-and normalize the probability :
-
-\begin{equation}
-p_{norm}(\sigma) = \frac{p(\sigma)}{ \int {p(\sigma) \text{d}\sigma}} \\ 
-p_{norm}(\mu) = \frac{p(\mu)} {\int {p(\mu) \text{d}\mu} }
-\end{equation}
-
-
-To characterize  light curve variability we first calculate for the entire light curve of an object  the approximate $\mu_{0}$ and $\sigma_{0}$ using bootstrapped resampling of the light curve.  This yields the boundaries for the more exact calculation of the full 2D log-likelihood performed on a grid of $\mu$ and $\sigma$ values. Thus the more accurate $\sigma_{full}$ and $\mu_{full}$ are found as a maximum of the 2D log-likelihood distribution (see Fig.~\ref{fig:sigma_example} ).
 
 
 
@@ -431,136 +186,8 @@ To characterize  light curve variability we first calculate for the entire light
 Colors can be calculated in two ways: using the median of forced photometry over all epochs (object detected in coadded i-band has photometry in all epochs:  \verb|ugrizMetrics.csv|), or the median over single-epoch detections (only when an object was above the detection threshold for a single epoch : \verb|medianPhotometry.csv|).  
 The median over all detections will be biased (especially for faint sources) towards higher brightness.  On the other hand, the median over all epochs will be more representative of the true brightness of an object in a given filter.  If a median brightness is negative, we can use zero point magnitudes and in such cases median over all epochs will be an upper limit on brightness, but still less biased than median over all detections. Therefore  we choose to use median over all epochs to calculate colors (see Fig.~\ref{fig:colors_example} for an example).  
 
-\section{\\ Zero Flux Magnitudes }
-\label{sec:zero_flux}
-
-If the median flux of an object over all epochs  is negative (an outcome of forced photometry on fluctuating noise), we cannot define its magnitude in that filter.  In such situation one can revert to  using for each negative flux the zero point magnitude ($m_1$) - the magnitude for a source with a flux of 1 count per sec, different for each exposure.  The zero point magnitude for each exposure with negative flux is calculated from the  Flux of 0 magnitude source,  $F_0$,  as  $m_{1} = 2.5 \log_{10}{F_{0}}$. For that object the new median magnitude in that filter will be the upper limit. We did not use this method, since a better way is to calculate the $2-\sigma$ flux limit for each flux measurement $< 2 \sigma$ : $F_{2\sigma}$. 
-
-\section{\\ Lightcurve Metrics}
-\label{sec:lc_metrics}
-
-For each object we calculate lightcurve-derived metrics. Denoting \verb|psfFlux| and \verb|psfFluxErr| as $y$ and $\sigma_{y}$, we find the number of measurements per lightcurve (N), the mean flux, the median flux (the 50th quartile), median flux error \verb|e50|, mean flux error \verb|e_mean|, $\sigma_{G}$ (based on interquartile flux range 0.7413(q75-q25)), $\chi^{2}$:
-\begin{equation}
-\frac{1}{N-1} \sum{\left( \frac{y-mean(y)}{\sigma_{y}} \right) ^{2}}
-\end{equation}
- mean weighted by the \verb|WVar| - the inverse variance (\verb|WeightedMean|), and the standard deviation weighted by inverse variance and corrected for intrinsic scatter (\verb|WeightedStdCorr|):
-
-\begin{equation}
-\mbox{WVar} = \left( \sum{\frac{1}{\sigma_{y}^{2}}} \right) ^{-1}
-\end{equation} 
-
-\begin{equation}
-\mbox{WeightedMean} = \mbox{WVar} \sum{\frac{y}{\sigma_{y}^{2}}}
-\end{equation}
-
-\begin{equation}
-\mbox{WeightedStdCorr} =  \left[ \frac{ \mbox{WVar}  }{N-1} \sum{\frac{(y-\mbox{WeightedMean})^{2}}{\sigma_{y}^{2}}} \right] ^{1/2}
-\end{equation}
 
 
-From these metrics, we can calculate the catalog photometry  :
-
-\begin{equation}
-\verb|median_mag| = -2.5 \log_{10}\mbox{median} - 48.6
-\end{equation}
-
-There are  $5892054$ sources with catalog photometry brighter than $23$ mag  (\verb|ugrizMetrics.csv|). 
-
-We can also calculate median photometry over all individual epochs  detections, cross-matched by extinction tables [HOW ? ]  There are $12373162$ sources with median photometry, matched with E(B-V) data (\verb|medianPhotometry.csv|) . 
-
-For each band we calculate metrics describing the lightcurve behavior for a given band, including the Butler \& Bloom classifier, which can  for high S/N objects, where it has a good discriminating power. It's advantage over the full DRW analysis for each lightcurve is that by assuming a range of $\tau$, amplitude, expected for a DRW for a QSO, we calculate the likelihood of a given lightcurve belonging to a QSO ( \verb|i_metrics.csv|). 
-
-\section{\\ Variance of $\chi^{2}_{DOF}$ }
-\label{App:AppendixD}
-
-Detecting variability is similar to asking whether the data are consistent with constant signal with noise. We simulate simple sinusoidal time-series to investigate what is the minimum amplitude that can be detected given measurement errors. Our time series is sourced from a parent distribution $y(t) = A(\sin(\omega t)$ by a sample of $N~100$ points, with homoscedastic Gaussian errors :  $\epsilon \sim \mathcal{N}(0,\sigma)$.  Thus each point of the sample distribution $x_{i} = y_{i} + \epsilon_{i}$. We call the theoretical variance of the parent distribution a variance over time series. Variance over realizations of the time series (samples) with errors is an estimator of the parent variance.  For a continuous smoothly varying probability function that describes the parent distribution, the mean is the first raw moment:
-
-\begin{equation}
-\mu = \int_{-\infty}^{\infty}{x p(x) dx}
-\end{equation} 
-and the variance is the second raw moment:
-\begin{equation}
-Var = \sigma^{2} =  \int_{-\infty}^{\infty}{(x-\mu)^{2} p(x) dx} =  \int_{-\infty}^{\infty}{x^{2} p(x) dx} - \mu^{2}
-\end{equation}
-
-We denote by $\langle x \rangle$ the expectation value of $x$. Thus the above can be written as : $Var= \sigma^{2} = \langle x^{2} \rangle - \langle x \rangle ^{2}$. 
-
-For our parent distribution,  $Var(x) = Var(y+\epsilon) = Var(y) + Var(\epsilon) = Var(A \sin(x)) + \sigma^{2}$. Now from the definition, $Var(A\sin(x)) = \langle A^{2} \sin^{2}(x) \rangle - \langle A \sin(x) \rangle ^{2} = A^{2} / 2 $, because $\langle \sin^{2}(x) \rangle = 1/2$ and $\langle sin(x)\rangle = 0$ due to symmetry. Thus $Var(x) = A^{2}/2  + \sigma^{2}$. 
-
-Now,  similarly to variance, chi-square can be considered either for the theoretical parent distribution, or for the sample, where the latter may be a good estimator of the parent chi-square if sufficient sampling is available. The chi-square is often defined as a sum of squares of departures from the mean over the variance: 
-
-\begin{equation}
-\chi^{2} = \sum\frac{(x_{i} - \mu)^{2}}{\sigma^{2}}
-\end{equation}
-where $\mu$ is the predicted mean, and $\sigma^{2}$ the expected variance. When divided by the number of degrees of freedom, it is  $\chi^{2}_{DOF} = \chi^{2} / N$ (also called $\chi^{2}_{PDF}$ : per degree of freedom). After Bevington$\&$Robinson, $\chi^{2}$ can be also understood as:
-
-\begin{equation}
-\chi^{2} = \sum \frac{[h(x_{J}) - N P(x_{J})]^{2}}{\sigma_{J}(h)^{2}}
-\end{equation} 
-with $h(x_{j})$ being the observed frequencies of $x$,  $y(x_{J}) = N P(x_{J})$ the predicted distribution, and $\sigma_{J}(h)^{2}$ the variance of the parent population. It is equivalent to our definition.
-
-Thus using the first definition, for $x_{i}$ we have  $\chi^{2} = {1/N} \sum(x_{i} - \mu / \sigma)^{2}$. Since  $\mu(x) = 0$, we have:
-\begin{equation}
-\chi^{2}_{DOF} = \frac{1}{N\sigma^{2}} \sum x_{i}^{2} = 1/\sigma^{2} \langle x_{i}^{2} \rangle \approx  Var(x_{i}) / \sigma^{2}
-\end{equation}
-since for $Var(x_{i}) =  \langle x_{i}^{2} \rangle $ (zero mean). Thus we approximate the  parent variance by the sample variance: 
-
-\begin{equation}
-\chi^{2}_{DOF} \approx \frac{A^{2}/2 + \sigma^{2}}{\sigma^{2}}
-\end{equation}
-
-Now if we assume that there is no amplitude, i.e. $A=0$, $\chi^{2}_{DOF} = 1$, and the expectation value $\langle \chi^{2}_{DOF} \rangle = 1$. With zero mean, the variance of $\chi^{2}_{DOF}$ is :
-
-\begin{equation}
-Var(\chi^{2}_{DOF}) = Var\left(\frac{1}{N} \sum \frac{x_{i}^{2}}{\sigma^{2}} \right) = Var\left(\frac{v}{N \sigma^{2}}\right)
-\end{equation}
-
-Now $Var(\alpha x) = \alpha^{2} Var(x)$. Thus 
-
-\begin{equation} 
-Var\left(\frac{v}{N \sigma^{2}}\right) = \frac{Var(v)}{N^{2} \sigma^{4}} 
-\end{equation}
-
-$Var(v) = \langle v^{2} \rangle - \langle v \rangle ^{2}$. We find first the second component:  the mean $\langle v \rangle = \langle \sum x_{i}^{2} \rangle = \sum \langle x_{i}^{2} \rangle $ (no cross terms). And since $Var(x_{i}) = \langle x_{i}^{2} \rangle= \sigma^{2}$, $\langle v \rangle = \sum \sigma^{2} = N \sigma^{2}$, so that $\langle v \rangle ^{2} = N^{2} \sigma^{4}$. 
-
-The first component is less straightforward: 
-
-\begin{equation}
-\langle v^{2} \rangle  = \langle (\sum x_{i}^{2} ) ^{2} \rangle  =  \langle \sum x_{i}^{2}  \sum x_{j}^{2}   \rangle = \sum \sum \langle x_{i}^{2} x_{j}^{2} \rangle
-\end{equation}
-
-The expectation value of $x_{i}^{2} x_{j}^{2}$ involves $N$ center terms and $N^{2}-N$ cross terms : 
-
-$(x_{1}^{2} + x_{2}^{2} +x_{3}^{2} +...)(x_{1}^{2} + x_{2}^{2} +x_{3}^{2} +...)= x_{1}^{4} + x_{2}^{4}+...+x_{1}^{2}x_{2}^{2} + x_{1}^{2}x_{3}^{2}...$
-
-Thus $\langle x_{i}^{2} x_{j}^{2} \rangle = (N^{2}-N) \int x^{2} P(x) dx \int x^{2} P(x) dx  + N \int x^{4} P(x) dx  $. 
-
-Since $A=0$, $P(x)$ is a Gaussian. 
-
-We evaluate 
-\begin{equation}
-\int_{-\infty}^{\infty} \frac{x^{2}}{\sqrt{2\pi \sigma^{2}}} e^{-x^{2} / 2 \sigma^{2}} dx 
-\end{equation}
-
-substituting $u = x / \sqrt{2} \sigma$ and use the standard result  $\int u^{2} \exp(-\alpha u^{2})du = \sqrt(\pi)/2\alpha^{3/2}$ , so that :   $\int x^{2} P(x) dx = \sigma^{2}$. 
-
-similarly, for 
-
-\begin{equation}
-\int_{-\infty}^{\infty} \frac{x^{4}}{\sqrt{2\pi \sigma^{2}}} e^{-x^{2} / 2 \sigma^{2}} dx 
-\end{equation}
-
-with identical substitution and the standard result  $\int u^{4} \exp(-\alpha u^{2})du =3 \sqrt(\pi)/4\alpha^{5/2}$ we obtain : $\int x^{4} P(x) dx = 3 \sigma^{4}$.  
-
-Therefore:
-\begin{equation}
-\langle v^{2} \rangle = (N^{2}-N) \sigma^{4} + N 3\sigma^{4} = N^{2}\sigma^{4} + 2N\sigma^{4}
-\end{equation}
-
-Finally, 
-\begin{equation}
-Var\left(\frac{v}{N \sigma^{2}}\right) = \frac{Var(v)}{N^{2} \sigma^{4}}  = \frac{1}{N^{2}\sigma^{4}}(N^{2}\sigma^{4} + 2N\sigma^{4}-N^{2}\sigma^{4}) = \frac{2}{N}
-\end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
