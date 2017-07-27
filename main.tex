@@ -88,12 +88,6 @@ Yusra AlSayyad$^{1}$
 $^{1}$Department of Astronomy, University of Washington, Seattle, WA, United States\\
 }
 
-% These dates will be filled out by the publisher
-\date{Accepted XXX. Received YYY; in original form ZZZ}
-
-% Enter the current year, for the copyright statements etc.
-\pubyear{2017}
-
 % Don't change these lines
 \begin{document}
 \label{firstpage}
@@ -111,64 +105,6 @@ $^{1}$Department of Astronomy, University of Washington, Seattle, WA, United Sta
 %%%%%%%%%%%%%%%%% BODY OF PAPER %%%%%%%%%%%%%%%%%%
 
 
-\section{Analysis}
-\label{sec:analysis}
-We developed  a new pipeline that was applied to all forced photometry light curves.  The main steps involve:
-\begin{itemize}
-  \item selecting faint epochs (where S/N  is less than a selected threshold), 
-  \item applying the Bayesian treatment (see an accompanying paper for details) and replacing the flux for faint epochs 
-  \item calculating a number of  standard flux-based features (mean, median, skewness, $\chi^{2}_{DOF}$, etc., as well as  applying the full Bayesian likelihood to parametrize the probability that the object is intrinsically variable
-  \item calculating flux-based magnitudes
-  \item calculating seasonal averages per light curve 
-  \item merging the light curve aggregates across filters
-\end{itemize}
-
-
-
-\subsection{Variability}
-
-
-\begin{figure*}
-
- \includegraphics[width=\textwidth]{figs/Fig_2_Lightcurve_full_seasonal_obj_217720894888346425}
- \cprotect\caption{A plot showing an outcome of seasonal averaging for an object id 217720894888346425. The left panel (red dots) shows  (mean, meanErr),  and the right panel (orange) shows (median,medianErr), instead of seasonal points (blue). Vertical dashed lines as on Fig.~\ref{fig:lc_example}}
- \label{fig:lc_example_seasonal}
-\end{figure*}
-
-
-\subsection{Colors}
-
-
-Since the reported fluxes are not extinction-corrected, we use a table of E(B-V) in a direction of a given source to correct for the galactic extinction. We use the formula  $x_{corr}  = x_{obs} + A_{x} * E(B-V)$, where $x$ is  u,g,r,i,z , and $A_x$ is 5.155, 3.793, 2.751, 2.086, 1.479  for each filter respectively  [Schlegel 98, Av are for RV = 3.1, also suggested by Eddie Schlafly] 
-
-
-
-Colors $x-y$ for an object with observations over many epochs are defined as the difference in magnitudes $m_{x} - m_{y}$. To find $m_{x}$, we need to define the average brightness of an object in  a given filter. With a special treatment of faint sources, substituting ($F_{obs}$,$\sigma_F$) for each faint observation by ($<F_{exp}>$,$rms$), we analyse updated lightcurves, addressing sparse sampling (see Fig.~\ref{fig:lc_example}).  
-
-\begin{figure}
-
- \includegraphics[width=\columnwidth]{figs/Fig_4_Lightcurve_full_obj_217720894888346422}
- \cprotect\caption{A plot showing an example light curve for an object id 217720894888346422. Jan 1st of each year (blue),  August 1st of 2005 (orange) and August 1st of each subsequent year (red) is indicated by vertical dashed lines. Observations prior to August 1st of 2005 have sparser cadence, whereas those after that date have more frequent observations.  This is due to the SDSS-III Supernova Survey which begun  Sept 1st 2005.  All points to the left of August 1st 2005 (orange line) are averaged together.  Points to the right of August 1st 2005 are seasonally averaged. }
- \label{fig:lc_example}
-\end{figure}
-
-Thus for a given object we average all sparser observations prior before SDSS-III, and calculate annual averages for all subsequent years. We calculate weighted mean and the rms as 
-\begin{equation}
-<F> = \frac{\sum {w_{i}F_{i}}}{\sum{w_{i}}} \\
-\sigma_{<F>} = \left( \sum{w_{i}}\right) ^{-1/2} 
-\end{equation}
-
-with weights as  $w_{i} = 1 / \sigma_{i}^{2}$. We also calculate the robust  median and the median error : $\sqrt{\pi / 2} \, \sigma_{F}$  [ robust $\sigma_{G} = 0.7414 * (75\% - 25\%) $ , based on the interquartile range] . Then lightcurve for a given object is reduced to one ($F_{i}, \sigma_{i}$) point prior to March 2006, and a single point per every subsequent year, where  ($F_{i}, \sigma_{i}$) is ($mean$, $meanErr$) or ($median$, $medianErr$).
-
-
-The resulting average flux is converted to magnitude, and the color is  $c = m_{x}-m_{y}$, with combined errors of band light curves added in quadrature
-
-
-
-
-\section{Results}
-\label{sec:results}
-
 
 \begin{figure*}
 
@@ -178,26 +114,6 @@ The resulting average flux is converted to magnitude, and the color is  $c = m_{
 \end{figure*}
 
 
-
-
-\section{\\ Making of ugriz metrics }
-\label{esc:ugriz_metrics}
-
-Colors can be calculated in two ways: using the median of forced photometry over all epochs (object detected in coadded i-band has photometry in all epochs:  \verb|ugrizMetrics.csv|), or the median over single-epoch detections (only when an object was above the detection threshold for a single epoch : \verb|medianPhotometry.csv|).  
-The median over all detections will be biased (especially for faint sources) towards higher brightness.  On the other hand, the median over all epochs will be more representative of the true brightness of an object in a given filter.  If a median brightness is negative, we can use zero point magnitudes and in such cases median over all epochs will be an upper limit on brightness, but still less biased than median over all detections. Therefore  we choose to use median over all epochs to calculate colors (see Fig.~\ref{fig:colors_example} for an example).  
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%%%%%%%%%%%%%%%%%%% REFERENCES %%%%%%%%%%%%%%%%%%
-
-% The best way to enter references is to use BibTeX:
-
-\bibliographystyle{mnras}
-\bibliography{references} % if your bibtex file is called example.bib
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 % Don't change these lines
